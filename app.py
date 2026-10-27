@@ -515,33 +515,44 @@ elif selected_page == "3. ML Predictive Intelligence":
         st.plotly_chart(fig_rec, use_container_width=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
+    
     # Bottom Table: Customer ML Predictions Table
     st.markdown('<div class="content-card">', unsafe_allow_html=True)
-    st.markdown('<div class="card-title">📋 Customer ML Predictions & Personalized Offers</div>', unsafe_allow_html=True)
-    cust_dedup = filtered_df.drop_duplicates(subset=['customer_id'])
-    available_cols = [
-    col for col in [
-        'customer_id',
-        'customer_name',
-        'repeat_probability',
-        'repeat_prediction_label',
-        'probability_band',
-        'customer_segment',
-        'loyalty_recommendation',
-        'personalised_offer_recommendation'
-    ]
-    if col in cust_dedup.columns
-]
-
-ml_table = cust_dedup[available_cols].copy()
-
-if 'repeat_probability' in ml_table.columns:
-    ml_table = ml_table.sort_values(
-        'repeat_probability', ascending=False
+    st.markdown(
+        '<div class="card-title">📋 Customer ML Predictions & Personalized Offers</div>',
+        unsafe_allow_html=True
     )
-    
-    st.dataframe(ml_table, hide_index=True, use_container_width=True)
+
+    cust_dedup = filtered_df.drop_duplicates(subset=['customer_id'])
+
+    available_cols = [
+        col for col in [
+            'customer_id',
+            'customer_name',
+            'repeat_probability',
+            'repeat_prediction_label',
+            'probability_band',
+            'customer_segment',
+            'loyalty_recommendation',
+            'personalised_offer_recommendation'
+        ]
+        if col in cust_dedup.columns
+    ]
+
+    ml_table = cust_dedup[available_cols].copy()
+
+    if 'repeat_probability' in ml_table.columns:
+        ml_table = ml_table.sort_values(
+            'repeat_probability', ascending=False
+        )
+
+    st.dataframe(
+        ml_table,
+        hide_index=True,
+        use_container_width=True
+    )
     st.markdown('</div>', unsafe_allow_html=True)
+  
 
 # =============================================================================
 # PAGE 4: DELIVERY & CUSTOMER RETENTION
