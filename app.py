@@ -518,7 +518,7 @@ elif selected_page == "3. ML Predictive Intelligence":
     # Bottom Table: Customer ML Predictions Table
     st.markdown('<div class="content-card">', unsafe_allow_html=True)
     st.markdown('<div class="card-title">📋 Customer ML Predictions & Personalized Offers</div>', unsafe_allow_html=True)
-    6cust_dedup = filtered_df.drop_duplicates(subset=['customer_id'])
+    cust_dedup = filtered_df.drop_duplicates(subset=['customer_id'])
     available_cols = [
     col for col in [
         'customer_id',
