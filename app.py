@@ -136,13 +136,25 @@ st.markdown("""
 @st.cache_data
 def load_master_data():
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    master_path = os.path.join(base_dir, "blinkit_master_dataset(2).csv")
-    if not os.path.exists(master_path):
-        # Fallback to CSV folder
-        master_path = os.path.join(base_dir, "cleaned data", "CSV folder", "blinkit_master_dataset.csv")
-    
+
+    csv_files = []
+    for root, dirs, files in os.walk(base_dir):
+        dirs[:] = [d for d in dirs if d != ".git"]
+        for file in files:
+            if file.lower().endswith(".csv"):
+                csv_files.append(os.path.join(root, file))
+
+    if not csv_files:
+        st.error("CSV dataset not found. Please upload the dataset to GitHub.")
+        st.stop()
+
+    master_path = next(
+        (f for f in csv_files if "master" in os.path.basename(f).lower()),
+        csv_files[0]
+    )
+
     df = pd.read_csv(master_path)
-    df['order_date'] = pd.to_datetime(df['order_date'])
+    df["order_date"] = pd.to_datetime(df["order_date"])
     return df
 
 df_master = load_master_data()
